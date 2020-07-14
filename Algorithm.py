@@ -1,44 +1,56 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np 
 
 def get_mid(a,b):
-    '''нахождение "середины": среднего арфиметчического двух целых чисел 
-    или ближайшего к нему целого'''
-    
+    """Getting 'a middle': the left nearest integer to the arithmetic mean 
+    of two integers numbers
+
+    :param a: an integer number
+    :param b: an integer number
+  
+    """
+        
     mid = (a+b) // 2 
     return mid
 
+
 def game_core_v3a(number):
-    '''Реализация принципа вложенных отрезков 
-    (последовательное сужение интервала поиска с учетом опыта предыдущих попыток)''' 
+    """Improved predicting number algorithm based on approximately  
+    twice reducing the search interval with every next attempt
     
-    count = 1                          # счетчик попыток
-    predict = 100                      # 1-я попытка угадать число (1-й кандидат в загаднное число)
-    if number == predict:              
+    :param number: an integer number between 1 and 100, to be predicted
+    
+    """
+    
+    count = 1                          # The attempt's counter.The 1-st attempt.
+    predict = 100                      # Setting value for the 1-st attempt.
+    if number == predict:              # Is the right end of interval (1;100) the desired number? 
         pass
     
-    else:                                # при неудачной попытке
-        # на каждой следующей попытке: ведем их счет, выбираем следующий интервал поиска
-        # и проверяем, не является ли "середина" интервала предыдущего поиска искомым числом. 
-        left_p = 1        # это - левый конец предыдущего, 1-го, интервала поиска
-        right_p = 100     # это - правый конец 1-го интервала         
+    else:                               # if the 1-st attempt is not successful
+        # At every next attempt: count it, take the next search interval 
+        # and check whether its 'middle' what is needed or not.
+        left_p = 1        # The left point of the previous,the 1-st, search interval.
+        right_p = 100     # The right point of the search interval mentioned above.    
     
-        while number != predict:    # пока загаданное число не найдено, повторяем след.процедуру: 
+        while number != predict:    # Repeat procedure below until find the desired number 
             count+=1 
             if number < predict:  
-                # Если загаданное число оказалось меньше кандидата на предыдущем шаге, 
-                # следующим кандидатом выбираем середину левого интервала
+                # If the desired number is less than the 'middle' of the previous interval, 
+                # take the left half of the previous one as the next interval.
                 right_p = predict
-                predict = get_mid(left_p,right_p)        
+                predict = get_mid(left_p,right_p)  
+                
             elif number > predict:
-                # если загаданное число больше выбранного, следующим выбираем середину правого отрезка 
+                # If the desired number is more than the 'middle' of the previous interval,
+                # take the right half of the previous one as the next interval.
                 left_p = predict
                 predict = get_mid(left_p,right_p)       
                        
-    return(count)                        # загаданное число найдено
+    return(count)                        # return how many attempt did it take
 
