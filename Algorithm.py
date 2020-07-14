@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np 
@@ -19,6 +19,7 @@ def game_core_v3(number):
         return(count)  
     else:
         predict = get_mid(1,100)
+        count+=1
         left = 1
         right = 100
         while number != predict:
@@ -31,12 +32,6 @@ def game_core_v3(number):
                 predict = get_mid(left,right)
             #print(left, right)
     return(count) # выход из цикла, если угадали
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
