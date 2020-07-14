@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[10]:
 
 
 import numpy as np                     
@@ -9,7 +9,10 @@ number = np.random.randint(1,101)
 
         
 def score_game(game_core):
-    '''Запускаем игру 1000 раз, чтобы узнать, как быстро игра угадывает число'''
+    """Running game 1000 times to know how many attempts on average about 
+    are needed for prediction
+    """
+    
     count_ls = []
     np.random.seed(1945)  # фиксируем RANDOM SEED, чтобы ваш эксперимент был воспроизводим!
     random_array = np.random.randint(1,101,size=(1000))
@@ -19,37 +22,44 @@ def score_game(game_core):
     print(f"Ваш алгоритм угадывает число в среднем за {score} попыток")
     return(score)
 
+
 def get_mid(a,b):
+    """Getting 'a middle': the left nearest integer to the arithmetic mean 
+    of two integers numbers
+    """
+        
     mid = (a+b) // 2 
     return mid
 
-def game_core_v3(number):
-    '''Реализация принципа вложенных отрезков 
-    (последовательное сужение интервала поиска с учетом опыта предыдущих попыток)'''
-    count = 1                          # счетчик попыток
-    predict = 100
-    if number == predict:
-        return(count)  
-    else:
-        predict = get_mid(1,100)
-        left = 1
-        right = 100
-        while number != predict:
-            count+=1
-            if number > predict: 
-                left = predict
-                predict = get_mid(left,right)
-            elif number < predict: 
-                right = predict
-                predict = get_mid(left,right)
-            #print(left, right)
-    return(count) # выход из цикла, если угадали
+
+def game_core_v3a(number):
+    """Improved predicting number algorithm based on approximately  
+    twice reducing the search interval with every next attempt
+    """
+    
+    count = 1                          
+    predict = 100 
+    
+    if number == predict:             
+        pass    
+    else:                          
+        left_p = 1        
+        right_p = 100     
+        while number != predict:    
+            count+=1 
+            if number < predict:  
+                right_p = predict
+                predict = get_mid(left_p,right_p)  
+            elif number > predict:
+                left_p = predict
+                predict = get_mid(left_p,right_p)      
+    return(count)                        
 
 
-# In[6]:
+# In[11]:
 
 
-score_game(game_core_v3)
+score_game(game_core_v3a)
 
 
 # In[ ]:
