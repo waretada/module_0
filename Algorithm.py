@@ -7,35 +7,38 @@
 import numpy as np 
 
 def get_mid(a,b):
+    '''нахождение "середины": среднего арфиметчического двух целых чисел 
+    или ближайшего к нему целого'''
+    
     mid = (a+b) // 2 
     return mid
 
-def game_core_v3(number):
+def game_core_v3a(number):
     '''Реализация принципа вложенных отрезков 
-    (последовательное сужение интервала поиска с учетом опыта предыдущих попыток)'''
+    (последовательное сужение интервала поиска с учетом опыта предыдущих попыток)''' 
+    
     count = 1                          # счетчик попыток
-    predict = 100
-    if number == predict:
-        return(count)  
-    else:
-        predict = get_mid(1,100)
-        count+=1
-        left = 1
-        right = 100
-        while number != predict:
-            count+=1
-            if number > predict: 
-                left = predict
-                predict = get_mid(left,right)
-            elif number < predict: 
-                right = predict
-                predict = get_mid(left,right)
-            #print(left, right)
-    return(count) # выход из цикла, если угадали
-
-
-# In[ ]:
-
-
-
+    predict = 100                      # 1-я попытка угадать число (1-й кандидат в загаднное число)
+    if number == predict:              
+        pass
+    
+    else:                                # при неудачной попытке
+        # на каждой следующей попытке: ведем их счет, выбираем следующий интервал поиска
+        # и проверяем, не является ли "середина" интервала предыдущего поиска искомым числом. 
+        left_p = 1        # это - левый конец предыдущего, 1-го, интервала поиска
+        right_p = 100     # это - правый конец 1-го интервала         
+    
+        while number != predict:    # пока загаданное число не найдено, повторяем след.процедуру: 
+            count+=1 
+            if number < predict:  
+                # Если загаданное число оказалось меньше кандидата на предыдущем шаге, 
+                # следующим кандидатом выбираем середину левого интервала
+                right_p = predict
+                predict = get_mid(left_p,right_p)        
+            elif number > predict:
+                # если загаданное число больше выбранного, следующим выбираем середину правого отрезка 
+                left_p = predict
+                predict = get_mid(left_p,right_p)       
+                       
+    return(count)                        # загаданное число найдено
 
